@@ -1,4 +1,4 @@
-use std::{collections::HashMap, env};
+mod lib;
 
 fn main() {
     let args: Vec<String> = env::args().collect();
