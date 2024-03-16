@@ -1,14 +1,30 @@
 use lazy_static::lazy_static;
-use std::{collections::HashMap, env};
+use std::collections::HashMap;
 
 pub fn getflag(substring: &String) -> Option<String> {
-    // TODO: implent
-    return String::from("AAA");
+    // Can only display words of even length
+    if substring.len() % 2 == 1 {
+        return None;
+    }
+
+    let mut result = String::new();
+
+    for chonk in substring.as_bytes().chunks(2) {
+        let chonk_str = std::str::from_utf8(chonk).unwrap();
+        match FLAG_MAP.get(chonk_str) {
+            Some(flag) => {
+                result.push_str(flag);
+            }
+            None => return None,
+        }
+    }
+
+    return Some(result);
 }
 
 // The longest most horrible Hashmap possible
-static FLAG_MAP: Lazy<HashMap<&'static str, &'static str>> = Lazy::new(|| {
-    HashMap::from([
+lazy_static! {
+    static ref FLAG_MAP: HashMap<&'static str, &'static str> = HashMap::from([
         ("AF", "🇦🇫"),
         ("AX", "🇦🇽"),
         ("AL", "🇦🇱"),
@@ -252,4 +268,4 @@ static FLAG_MAP: Lazy<HashMap<&'static str, &'static str>> = Lazy::new(|| {
         ("ZM", "🇿🇲"),
         ("ZW", "🇿🇼"),
     ]);
-});
+}
